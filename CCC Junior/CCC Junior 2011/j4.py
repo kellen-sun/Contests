@@ -31,9 +31,9 @@ while True:
             path.append(a)
     elif x[0]=='q':
         break
-    print(path[-1])
+    print(*path[-1], end=" ")
     if trigger:
-        print('Danger')
+        print('DANGER')
         break
     else:
         print('safe')

@@ -1,6 +1,6 @@
 
-a= int(input('How many antennas? '))
-e= int(input('How many eyes? '))
+a= int(input())
+e= int(input())
 if a>=3 and e<=4:
     print('TroyMartian')
 if a<=6 and e>=2:

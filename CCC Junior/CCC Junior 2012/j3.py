@@ -22,4 +22,4 @@ for x in range(3):
 
 for x in range(len(shape_2)):
     
-    print(shape_2[x])
+    print(*shape_2[x], sep="")
