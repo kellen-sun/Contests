@@ -1,5 +1,5 @@
-a = input('')
-b = input('')
+a = input()
+b = input()
 c = False
 for x in range(len(b)):
     if a.find(b) != -1:

@@ -2,9 +2,18 @@ from collections import Counter
 books = list(input())
 
 occurences = dict(Counter(books))
-l=occurences["L"]
-m=occurences["M"]
-s=occurences["S"]
+if "L" in occurences.keys():
+    l=occurences["L"]
+else:
+    l=0
+if "M" in occurences.keys():
+    m=occurences["M"]
+else:
+    m=0
+if "S" in occurences.keys():
+    s=occurences["S"]
+else:
+    s=0
 c=0
 l_in_m=0
 m_in_l=0

@@ -1,4 +1,4 @@
-a = int(input(''))
+a = int(input())
 c = []
 d = []
 for x in range(a):
