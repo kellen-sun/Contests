@@ -2,18 +2,18 @@ c, r, d = map(int, input().split())
 roads = [list(map(int, input().split())) for i in range(r)]
 destination = [int(input())-1 for i in range(d)]
 roads.sort(key = lambda x:x[2], reverse=True)
-#make roads into an adjacency matrix
 
+#make roads into an adjacency matrix
 graph = [[0 for j in range(c)] for i in range(c)]
 
 for i in roads:
     if i[2]>graph[i[1]-1][i[0]-1]:
         graph[i[1]-1][i[0]-1]=i[2]
         graph[i[0]-1][i[1]-1]=i[2]
-#for i in graph: print(*i)
 
-sgraph = [[[i[j], j] for j in range(len(i))] for i in graph]
-for i in sgraph: i.sort(key = lambda x:x[0], reverse = True)
+#it takes an adjacency matrix, and sorts it so that the higher weighted edges appear first under each vertex, but then also includes to which vertex the edge points to
+sgraph = [sorted([[i[j], j] for j in range(len(i))], key=lambda x: x[0], reverse=True) for i in graph]
+
 #print(sgraph)
 in_tree = [False for i in range(c)]
 in_tree[0]=True
@@ -23,16 +23,20 @@ while destination:
     adding = (0,0)
     for i in range(len(in_tree)):
         if in_tree[i]:
-            #here instead should have a presorted array of which is optimal
-            for j in range(len(graph[i])):
-                if not in_tree[j]:
-                    if graph[i][j]>m:
-                        #print("ll")
-                        m=graph[i][j]
-                        adding = (i,j)
+            if m < sgraph[i][0][0]:
+                
+                m=sgraph[i][0][0]
+                adding = (i, sgraph[i][0][1])
+                #sgraph[i].pop(0)
     if adding[1] in destination:
         destination.remove(adding[1])
     in_tree[adding[1]]=True
+    sgraph[adding[0]].pop(0)
+    """sgraph = [
+        [(weight, vertex), (weight2, vertex2)],
+        [],
+    ]"""
     out = m
-    #print(destination)
+    #print(in_tree)
+    #print(m)
 print(out)
