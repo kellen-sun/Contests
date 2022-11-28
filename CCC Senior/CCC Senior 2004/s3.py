@@ -7,38 +7,31 @@ for i in range(len(grid)):
         else:
             grid[i][j]=grid[i][j].split("+")
 
-#remake into nonrecursive dfs
-def findsum(i,j):
-    global grid
-    global seen
-    global total
-    if (i,j) in seen:
-        return "*"
-    for k in range(len(grid[i][j])):
-        #will need to convert k to a x,y int coordinate
-        value = grid[i][j][k]
-        #print(value)
-        x=ord(value[0])-65
-        y=int(value[1])-1
-        kk=grid[x][y]
-        #print(kk)
-        if isinstance(kk, int):
-            total+=kk
-        else:
-            seen.append((x,y))
-            ll=findsum(x,y)
-            if isinstance(ll, int):
-                total+=ll
-            else:
-                return "*"
-    return total
-
 for i in range(len(grid)):
     for j in range(len(grid[i])):
         if not isinstance(grid[i][j], int):
+            #write an interative dfs here
             seen = []
             total = 0
-            grid[i][j]=findsum(i,j)
+            stack = [(i,j)]
+            while stack:
+                current = stack.pop(-1)
+                location = grid[current[0]][current[1]]
+                if location == "*":
+                    total = "*"
+                    break 
+                if isinstance(location, int):
+                    total+=location
+                else:
+                    for k in location:
+                        x=ord(k[0])-65
+                        y=int(k[1])-1
+                        if (x,y) in seen:
+                            grid[x][y]="*"
+                        else:
+                            seen.append((x,y))
+                            stack.append((x,y))
+            grid[i][j]=total
 
 for i in grid:
     print(*i)
