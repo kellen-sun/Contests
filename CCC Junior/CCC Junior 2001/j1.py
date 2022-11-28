@@ -1,18 +1,5 @@
-a=int(input())
-for x in range(a):
-    for y in range(x):
-        print('*', end="", flush=True)
-    for c in range(2*a-2*x):
-        print(' ',  end="", flush=True)
-    for y in range(x):
-        print('*', end="", flush=True)
-    print('')
-        
-for x in range(a):
-    for y in range(a-x):
-        print('*', end="", flush=True)
-    for c in range(2*x):
-        print(' ',  end="", flush=True)
-    for y in range(a-x):
-        print('*', end="", flush=True)
-    print('')
+n=int(input())
+for i in range(n//2+1):
+    print("*"*(2*i+1)+(2*n-2-4*i)*" "+"*"*(2*i+1))
+for i in range(n-2, -1, -2):
+    print("*"*i+(2*n-2*i)*" "+"*"*i)
