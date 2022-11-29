@@ -1,4 +1,5 @@
-grid = [list(input().split()) for i in range(10)]
+import sys
+grid = [list(sys.stdin.readline().split()) for i in range(10)]
 #loop to find not integer cells then bfs run them to search for their constituents if returns to a cell in queued or a cell with * then fill it with *
 for i in range(len(grid)):
     for j in range(len(grid[i])):
