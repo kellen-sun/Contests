@@ -11,26 +11,27 @@ for i in range(len(grid)):
     for j in range(len(grid[i])):
         if not isinstance(grid[i][j], int):
             #write an interative dfs here
-            seen = []
+            #seen = []
             total = 0
-            stack = [(i,j)]
+            stack = [(i,j,[(i,j)])]
             while stack:
                 current = stack.pop(-1)
+                
                 location = grid[current[0]][current[1]]
                 if location == "*":
                     total = "*"
-                    break 
+                    break
                 if isinstance(location, int):
                     total+=location
                 else:
                     for k in location:
                         x=ord(k[0])-65
                         y=int(k[1])-1
-                        if (x,y) in seen:
+                        if (x,y) in current[2]:
                             grid[x][y]="*"
                         else:
-                            seen.append((x,y))
-                            stack.append((x,y))
+                            #current[2].append((x,y))
+                            stack.append((x,y, current[2]+[(x,y)]))
             grid[i][j]=total
 
 for i in grid:
