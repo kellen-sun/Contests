@@ -1,10 +1,12 @@
-# seems impossible to get full points with python
+# doable in python if use deque and sys to input
+from collections import deque 
+import sys
 
-n,m = map(int, input().split())
+n,m = map(int, sys.stdin.readline().split())
 comparisons = []
 for i in range(m):
-    comparisons.append(list(map(int, input().split())))
-compare = list(map(int, input().split()))
+    comparisons.append(list(map(int, sys.stdin.readline().split())))
+compare = list(map(int, sys.stdin.readline().split()))
 
 taller = []
 graph = {}
@@ -15,9 +17,10 @@ for i in comparisons:
 
 out = "unknown"
 queue = [compare[0]]
+queue = deque(queue)
 queued = [True for i in range(n)]
 while queue:
-    current = queue.pop(0)
+    current = queue.popleft()
     if current == compare[1]:
         out = "yes"
         break
@@ -26,10 +29,11 @@ while queue:
             queued[i-1]=False
             queue.append(i)
 queue = [compare[1]]
+queue = deque(queue)
 queued = [True for i in range(n)]
 if out!="yes":
     while queue:
-        current = queue.pop(0)
+        current = queue.popleft()
         if current == compare[0]:
             out = "no"
             break
