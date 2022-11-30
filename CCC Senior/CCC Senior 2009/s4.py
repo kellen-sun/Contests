@@ -1,5 +1,7 @@
-#then convert dijkstra's from the the node u want a pencil from and find the cheapest choice.
+#then convert dijkstra's from the node u want a pencil from and find the cheapest choice.
 #add the pencil costs to all the destination city costs (removing the ones that don't sell)
+import sys
+input = sys.stdin.readline
 n = int(input())
 t = int(input())
 roads = [list(map(int, input().split())) for i in range(t)]
@@ -18,18 +20,20 @@ for i in roads:
 
 def dijkstra(graph, source):
     dist = [float('inf') for i in range(len(graph))]
-    prev = [None for i in range(len(graph))]
     Q = [i for i in range(len(graph))]
     dist[source] = 0
     while Q:
-        u=min(Q)
+        mm = [float("inf"),0]
+        for i in Q:
+            if dist[i]<mm[0]:
+                mm = (dist[i], i)
+        u=mm[1]
         Q.remove(u)
         for v in Q:
             if graph[u][v]!=0:
                 alt = dist[u]+graph[u][v]
                 if alt < dist[v]:
                     dist[v]=alt
-                    prev[v]=u
     return dist
 out = dijkstra(graph, d-1)
 
