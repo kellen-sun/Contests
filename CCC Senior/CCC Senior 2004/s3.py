@@ -19,7 +19,6 @@ for i in range(len(grid)):
             stack = deque(stack)
             while stack:
                 current = stack.pop()
-                
                 location = grid[current[0]][current[1]]
                 if location == "*":
                     total = "*"
