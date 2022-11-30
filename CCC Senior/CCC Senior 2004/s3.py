@@ -1,4 +1,5 @@
 import sys
+from collections import deque
 grid = [list(sys.stdin.readline().split()) for i in range(10)]
 #loop to find not integer cells then bfs run them to search for their constituents if returns to a cell in queued or a cell with * then fill it with *
 for i in range(len(grid)):
@@ -11,12 +12,13 @@ for i in range(len(grid)):
 for i in range(len(grid)):
     for j in range(len(grid[i])):
         if not isinstance(grid[i][j], int):
-            #write an interative dfs here
+            #write an iterative dfs here
             #seen = []
             total = 0
             stack = [(i,j,[(i,j)])]
+            stack = deque(stack)
             while stack:
-                current = stack.pop(-1)
+                current = stack.pop()
                 
                 location = grid[current[0]][current[1]]
                 if location == "*":
