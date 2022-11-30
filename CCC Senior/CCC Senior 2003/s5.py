@@ -1,6 +1,7 @@
-c, r, d = map(int, input().split())
-roads = [list(map(int, input().split())) for i in range(r)]
-destination = [int(input())-1 for i in range(d)]
+import sys
+c, r, d = map(int, sys.stdin.readline().split())
+roads = [list(map(int, sys.stdin.readline().split())) for i in range(r)]
+destination = [int(sys.stdin.readline())-1 for i in range(d)]
 roads.sort(key = lambda x:x[2], reverse=True)
 
 #make roads into an adjacency matrix
@@ -32,10 +33,6 @@ while destination:
         destination.remove(adding[1])
     in_tree[adding[1]]=True
     sgraph[adding[0]].pop(0)
-    """sgraph = [
-        [(weight, vertex), (weight2, vertex2)],
-        [],
-    ]"""
     out = m
     #print(in_tree)
     #print(m)
