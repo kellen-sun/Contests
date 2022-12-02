@@ -7,7 +7,7 @@ grid = []
 for i in range(m):
     grid.append(list(map(int, input().split())))
 
-def bfs(graph, start):
+def bfs(grid, start):
     global m
     global n
     queue = deque([start])
@@ -19,10 +19,11 @@ def bfs(graph, start):
         current = queue.popleft()
         if current == (m,n):
             return "yes"
-        for i in graph[current]:
-            if not queued[i]:
-                queued[i]=True
-                queue.append(i)
+        for i in factors(grid[current[0]-1][current[1]-1]):
+            if i[0]<=m and i[1]<=n:
+                if not queued[i]:
+                    queued[i]=True
+                    queue.append(i)
     return "no"
 
 def factors(n):
@@ -37,10 +38,5 @@ graph = {}
 for i in range(m):
     for j in range(n):
         graph[(i+1,j+1)] = []
-for i in range(m):
-    for j in range(n):
-        for k in factors(grid[i][j]):
-            if k[0]<=m and k[1]<=n:
-                graph[(i+1,j+1)].append(k)
 
-print(bfs(graph, (1,1)))
+print(bfs(grid, (1,1)))
