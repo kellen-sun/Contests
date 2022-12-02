@@ -1,4 +1,5 @@
 import sys
+from collections import deque
 input = sys.stdin.readline
 m = int(input())
 n = int(input())
@@ -9,13 +10,13 @@ for i in range(m):
 def bfs(graph, start):
     global m
     global n
-    queue = [start]
+    queue = deque([start])
     queued = {}
     for i in range(m):
         for j in range(n):
             queued[(i+1, j+1)]=False
     while queue:
-        current = queue.pop(0)
+        current = queue.popleft()
         if current == (m,n):
             return "yes"
         for i in graph[current]:
@@ -32,7 +33,6 @@ def factors(n):
             f.append((n//i, i))
     return f
 
-
 graph = {}
 for i in range(m):
     for j in range(n):
@@ -42,5 +42,5 @@ for i in range(m):
         for k in factors(grid[i][j]):
             if k[0]<=m and k[1]<=n:
                 graph[(i+1,j+1)].append(k)
-#print(graph)
+
 print(bfs(graph, (1,1)))
