@@ -1,33 +1,46 @@
-n=int(input())
-m=int(input())
-grid=[]
-for x in range(n):
+import sys
+input = sys.stdin.readline
+m = int(input())
+n = int(input())
+grid = []
+for i in range(m):
     grid.append(list(map(int, input().split())))
 
-def neighbors(grid,node):
-    x=grid[node[0]][node[1]]
-    nei=[]
-    for i in range(1, x + 1):
-       if (x % i) == 0 and i<=len(grid) and x/i <= len(grid[0]):
-           #print('a')
-           nei.append((int(i)-1,int(x/i)-1))
-    return nei
-    
+def bfs(graph, start):
+    global m
+    global n
+    queue = [start]
+    queued = {}
+    for i in range(m):
+        for j in range(n):
+            queued[(i+1, j+1)]=False
+    while queue:
+        current = queue.pop(0)
+        if current == (m,n):
+            return "yes"
+        for i in graph[current]:
+            if not queued[i]:
+                queued[i]=True
+                queue.append(i)
+    return "no"
 
-queue=[(0,0)]
-queued=[]
-a=False
-while queue:
-    node=queue.pop(0)
-    #print(node)
-    if node == (n-1,m-1):
-        a=True
-    elif node not in queued:
-        for current_neighbor in neighbors(grid, node):
-            queue.append(current_neighbor)
-        queued.append(node)
+def factors(n):
+    f = []
+    for i in range(1,int(n**0.5)+1):
+        if n%i == 0:
+            f.append((i, n//i))
+            f.append((n//i, i))
+    return f
 
-if a:
-    print('yes')
-else:
-    print('no')
+
+graph = {}
+for i in range(m):
+    for j in range(n):
+        graph[(i+1,j+1)] = []
+for i in range(m):
+    for j in range(n):
+        for k in factors(grid[i][j]):
+            if k[0]<=m and k[1]<=n:
+                graph[(i+1,j+1)].append(k)
+#print(graph)
+print(bfs(graph, (1,1)))
