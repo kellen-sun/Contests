@@ -1,6 +1,7 @@
 import sys
 from collections import deque
 input = sys.stdin.readline
+#optimize by using prime factors to get the factors
 m = int(input())
 n = int(input())
 grid = []
@@ -10,6 +11,7 @@ for i in range(m):
 def bfs(grid, start):
     global m
     global n
+    kf = {}
     queue = deque([start])
     queued = {}
     for i in range(m):
@@ -19,7 +21,12 @@ def bfs(grid, start):
         current = queue.popleft()
         if current == (m,n):
             return "yes"
-        for i in factors(grid[current[0]-1][current[1]-1]):
+        if  kf.get(grid[current[0]-1][current[1]-1])!=None:
+            f = kf[grid[current[0]-1][current[1]-1]]
+        else:
+            f=factors(grid[current[0]-1][current[1]-1])
+            kf[grid[current[0]-1][current[1]-1]]=f
+        for i in f:
             if i[0]<=m and i[1]<=n:
                 if not queued[i]:
                     queued[i]=True
