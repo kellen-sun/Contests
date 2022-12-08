@@ -14,7 +14,7 @@ for i in edges:
     graph[i[0]-1].append((i[1]-1, i[2], i[3]))
     graph[i[1]-1].append((i[0]-1, i[2], i[3]))
 
-dist = [(0,a)]#,0)]
+dist = [(0,a)]
 heapq.heapify(dist)
 dd = [[float('inf') for i in range(k)] for j in range(n)]
 dd[a][0] = 0
