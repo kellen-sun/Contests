@@ -13,23 +13,27 @@ graph = [[] for i in range(n)]
 for i in edges:
     graph[i[0]-1].append((i[1]-1, i[2], i[3]))
     graph[i[1]-1].append((i[0]-1, i[2], i[3]))
-#print(graph)
 
-dist = [[float('inf'),i] for i in range(n)]
-Q = list(range(n))
-dist[a] = [0,a]
+dist = [(0,a,0)]
 heapq.heapify(dist)
-dd = [float('inf') for i in range(n)]
-dd[a] = 0
+dd = [[float('inf') for i in range(k)] for j in range(n)]
+dd[a][0] = 0
+visited = [[False for i in range(k)] for j in range(n)]
 while dist:
     u = heapq.heappop(dist)
     d = u[0]
     node = u[1]
-    print(node)
-    #Q.remove(node) #this would be linear time though
+    damage = u[2]
+    visited[node][damage] = True
     for v in graph[node]:
-        alt = d+v[1]
-        #print(v[0])
-        if dd[v[0]]>alt:
-            dd[v[0]]=alt
-print(dd)
+        #print(v)
+        for add_dmg in range(k-v[2]):
+            alt = dd[node][add_dmg]+v[1]
+            if dd[v[0]][add_dmg+v[2]]>alt and not visited[v[0]][add_dmg+v[2]]:
+                dd[v[0]][add_dmg+v[2]]=alt
+                heapq.heappush(dist, (alt, v[0], add_dmg+v[2]))
+a = min(dd[b])
+if a==float("inf"):
+    print(-1)
+else:
+    print(a)
