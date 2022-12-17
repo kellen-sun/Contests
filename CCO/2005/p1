@@ -8,30 +8,23 @@ grid = [list(map(int, input().split())) for i in range(m)]
 # loop 000 to 999
 # find if there's a path from any of the top 10 to the bottom row
 
-def traverse(usable, grid, start):
-    global n,m
-    queue = deque([start])
-    queued = {(i,j):False for i in range(m) for j in range(n)}
-    queued[start]=True
-    while queue:
-        current = queue.popleft()
-        if current[0]==m-1:
-            return True
-        for node in [(current[0],current[1]+1), (current[0],current[1]-1), (current[0]+1,current[1]), (current[0]-1,current[1])]:
-            if m>node[0]>=0 and n>node[1]>=0:
-                if not queued[node] and grid[node[0]][node[1]] in usable:
-                    queue.append(node)
-                    queued[node]=True
-    return False
-
-
 for a in range(10):
     for b in range(10):
         for c in range(10):
             usable = [a,b,c]
             for i in range(n):
                 start = (0,i)
-                if traverse(usable, grid, start):
-                    print(*usable)
-                    sys.exit()
+                queue = deque([start])
+                queued = {(i,j):False for i in range(m) for j in range(n)}
+                queued[start]=True
+                while queue:
+                    current = queue.popleft()
+                    if current[0]==m-1:
+                        print(*usable)
+                        sys.exit()
+                    for node in [(current[0],current[1]+1), (current[0],current[1]-1), (current[0]+1,current[1]), (current[0]-1,current[1])]:
+                        if m>node[0]>=0 and n>node[1]>=0:
+                            if not queued[node] and grid[node[0]][node[1]] in usable:
+                                queue.append(node)
+                                queued[node]=True
 print(-1)

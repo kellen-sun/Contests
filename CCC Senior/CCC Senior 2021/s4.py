@@ -20,9 +20,8 @@ while queue:
     for i in graph[current]:
         if dist[i[0]]>dist[current]+1:
             dist[i[0]]=dist[current]+1
-#print(dist)
+print(dist)
 #O(N+W) to run the bfs
-
 
 #for a specific train path, minimize S_0 to S_i time + S_i to S_n
 #a simple loop for each day would be O(D*N)
