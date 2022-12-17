@@ -1,4 +1,4 @@
-#then convert dijkstra's from the node u want a pencil from and find the cheapest choice.
+#dijkstra's from the node u want a pencil from and find the cheapest choice.
 #add the pencil costs to all the destination city costs (removing the ones that don't sell)
 import sys
 import heapq
@@ -24,10 +24,14 @@ dist = [(0,source)]
 heapq.heapify(dist)
 dd = [float('inf') for j in range(n)]
 dd[source] = 0
+visited = set()
 while dist:
     u = heapq.heappop(dist)
     d = u[0]
     node = u[1]
+    if node in visited:
+        continue
+    visited.add(node)
     for v in graph[node]:
         alt = d+v[1]
         if dd[v[0]]>alt:
