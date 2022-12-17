@@ -3,32 +3,40 @@ import heapq
 input = sys.stdin.readline
 
 k,n,m = map(int, input().split())
-edges = [tuple(map(int, input().split())) for i in range(m)]
+
+graph = [{} for i in range(n)]
+for i in range(m):
+    a,b,t,h = map(int, input().split())
+    graph[a-1].setdefault(b-1,[]).append((t,h))
+    graph[b-1].setdefault(a-1,[]).append((t,h))
 a,b = map(int, input().split())
 a-=1
 b-=1
 
-graph = [[] for i in range(n)]
-for i in edges:
-    graph[i[0]-1].append((i[1]-1, i[2], i[3]))
-    graph[i[1]-1].append((i[0]-1, i[2], i[3]))
-
-dist = [(0,a)]
+dist = [(0,a,k)]
 heapq.heapify(dist)
-dd = [[float('inf') for i in range(k)] for j in range(n)]
-dd[a][0] = 0
-
+INF = 10**10
+dd = [[INF for i in range(201)] for j in range(n)]
+dd[a][k] = 0
+min_time=INF
+visited=set()
 while dist:
     u = heapq.heappop(dist)
-    d = u[0]
-    node = u[1]
+    if u[1]==b:
+        min_time=u[0]
+        break
+    if u[1:] in visited:
+        continue
+    visited.add(u[1:])
+    node=u[1]
     for v in graph[node]:
-        for add_dmg in range(k-v[2]):
-            alt = dd[node][add_dmg]+v[1]
-            total_dmg = add_dmg+v[2]
-            if dd[v[0]][total_dmg]>alt:
-                dd[v[0]][total_dmg]=alt
-                heapq.heappush(dist, (alt, v[0]))
-a = min(dd[b])
-if a==float("inf"): print(-1)
-else: print(a)
+        for route in graph[node][v]:
+            alt = (dd[node][u[2]]+route[0], v, u[2]-route[1])
+            if alt[2]>0:
+                if alt[0]<dd[alt[1]][alt[2]]:
+                    dd[alt[1]][alt[2]]=alt[0]
+                heapq.heappush(dist, alt)
+min_time = min(dd[b])
+if min_time==INF:
+    min_time=-1
+print(min_time)
