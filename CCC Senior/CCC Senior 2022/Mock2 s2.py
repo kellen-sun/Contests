@@ -9,6 +9,7 @@ votes = [input() for i in range(n)]
 letters = list(votes[0])[:-1]
 graph={i:set() for i in letters}
 '''
+#this works but is too slow
 for i in letters:
     for j in letters:
         if i!=j:
@@ -18,6 +19,7 @@ for i in letters:
                     s=False
             if s:
                 graph.setdefault(j,[]).append(i)'''
+#tried to make faster with sets but WA.
 seen = set()
 letters = set(letters)
 for i in range(k):
