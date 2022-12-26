@@ -35,54 +35,57 @@ def dijkstra(start, graph):
                 heapq.heappush(queue, (alt, v[0]))
     return dist
 
-def search(start, graph):
-    queue = deque([(start, [start], 0)])
-    visited=[start]
-    while queue:
-        current = queue.popleft()
-        node = current[0]
-        paths = current[1]
-        cost = current[2]
-        for i in graph[node]:
-            v=i[0]
-            if len(paths)>1:
-                if v!=paths[-2]:
-                    p=paths.copy()
-                    p.append(v)
-                    if v==start:
-                        if len(p)==len(set(p))+1:
-                            return cost+i[1], p
-                        else:
-                            t=[]
-                            for j in range(len(p)):
-                                if p[j]==p[-1-j]:
-                                    t.append(p[j])
-                                else: break
-                            return [False,t[:-1]]
-                    queue.append((v, p, cost+i[1]))
-                    visited.append(v)
-            else:
-                p=paths.copy()
-                p.append(v)
-                queue.append((v,p,cost+i[1]))
-                visited.append(v)
-    return [False,list(set(visited))]
+def dfs_cycle(node, parent, color, par, cost):
+    global cyclenumber
+    if color[node]==2:
+        return
+    if color[node]==1:
+        v=[]
+        cyclecost=0
+        cur=parent
+        v.append(cur)
+        #print(par, node)
+        while cur!=node:
+            cyclecost+=par[cur][1]
+            #print("node", par[cur][0],"weight",par[cur][1])
+            cur=par[cur][0]
+            
+            v.append(cur)
+        start=v[0]
+        end=v[-1]
+        for i in graph[start]:
+            if i[0]==end:
+                cyclecost+=i[1]
+                break
+        
+        cycles[cyclenumber]=(v,cyclecost)
+        cyclenumber+=1
+        return
+    if parent!=-1:
+        par[node]=(parent, cost)
+        color[node]=1
+    for vv in graph[node]:
+        v=vv[0]
+        if v==parent:
+            continue
+        dfs_cycle(v, node, color, par, vv[1])
+    color[node]=2
 
 sdist = dijkstra(s,graph)
 edist = dijkstra(e,graph)
 
-cyclecost = [-1 for i in range(n)]
-for i in range(n):
-    if cyclecost[i]==-1:
-        ll=search(i, graph)
-        if ll[0]!=False:
-            for j in ll[1]:
-                cyclecost[j]=ll[0]
-        else:
-            for j in ll[1]:
-                cyclecost[j]=float('inf')
-#print(cyclecost)
+cycles=[[] for i in range(n)]
+cyclenumber=0
+dfs_cycle(1, -1, [0]*n, [0]*n, 0)
+#print(cycles)
+cyclecost = [float('inf') for i in range(n)]
+for i in range(cyclenumber):
+    cost = cycles[i][1]
+    for j in cycles[i][0]:
+        cyclecost[j]=cost
+
 m = float('inf')
+
 for i in range(n):
     alt=cyclecost[i]+sdist[i]+edist[i]
     if alt<m:
