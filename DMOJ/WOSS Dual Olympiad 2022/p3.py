@@ -8,7 +8,7 @@ roads = [tuple(map(int, input().split())) for i in range(m)]
 s,e = map(int, input().split())
 s,e=s-1, e-1
 
-#bfs to find distance of S and E to all nodes
+#bfs to find distance of S and E to all nodes (dijkstra)
 #find all cycles and find their cost
 #loop through all nodes that are in a cycle
 #find the one that minimizes -> cyclecost+dist(s,node)+dist(e,node)
@@ -35,53 +35,41 @@ def dijkstra(start, graph):
                 heapq.heappush(queue, (alt, v[0]))
     return dist
 
-def dfs_cycle(node, parent, color, par, cost):
-    global cyclenumber
-    if color[node]==2:
+def dfs_cycle(u,t,p):
+    global cycles, parent, vis_num, graph
+    if vis_num[u]==2:
         return
-    if color[node]==1:
-        v=[]
-        cyclecost=0
-        cur=parent
-        v.append(cur)
-        #print(par, node)
-        while cur!=node:
-            cyclecost+=par[cur][1]
-            #print("node", par[cur][0],"weight",par[cur][1])
-            cur=par[cur][0]
-            
-            v.append(cur)
-        start=v[0]
-        end=v[-1]
-        for i in graph[start]:
-            if i[0]==end:
-                cyclecost+=i[1]
-                break
-        
-        cycles[cyclenumber]=(v,cyclecost)
-        cyclenumber+=1
+    if vis_num[u]==1:
+        cycles.append([[u], t])
+        curr=p
+        while curr!=u:
+            cycles[-1][0].append(curr)
+            cycles[-1][1]+=parent[curr][1]
+            curr=parent[curr][0]
         return
-    if parent!=-1:
-        par[node]=(parent, cost)
-        color[node]=1
-    for vv in graph[node]:
-        v=vv[0]
-        if v==parent:
-            continue
-        dfs_cycle(v, node, color, par, vv[1])
-    color[node]=2
+    parent[u] = [p,t]
+    vis_num[u]=1
+    for node in graph[u]:
+        if node[0]!=parent[u][0]:
+            dfs_cycle(node[0],node[1],u)
+    vis_num[u]=2
+
 
 sdist = dijkstra(s,graph)
 edist = dijkstra(e,graph)
 
-cycles=[[] for i in range(n)]
-cyclenumber=0
-dfs_cycle(1, -1, [0]*n, [0]*n, 0)
-#print(cycles)
+cycles=[]
+parent = [[0,0] for i in range(200005)]
+vis_num = [0 for i in range(200005)]
+for i in range(n):
+    if vis_num[i]==0:
+        dfs_cycle(i,0,-1)
+#dfs_cycle(1, 0, -1)
+
 cyclecost = [float('inf') for i in range(n)]
-for i in range(cyclenumber):
-    cost = cycles[i][1]
-    for j in cycles[i][0]:
+for i in cycles:
+    cost = i[1]
+    for j in i[0]:
         cyclecost[j]=cost
 
 m = float('inf')
