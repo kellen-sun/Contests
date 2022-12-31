@@ -3,6 +3,7 @@
 import sys
 import heapq
 input = sys.stdin.readline
+INF = 10**12
 
 n = int(input())
 t = int(input())
@@ -20,15 +21,17 @@ for i in pencils:
     pen[i[0]-1]=i[1]
 source = int(input())-1
 
-dist = [(0,source)]
-heapq.heapify(dist)
-dd = [float('inf') for j in range(n)]
+dd = [INF for j in range(n)]
 dd[source] = 0
 visited = set()
-while dist:
-    u = heapq.heappop(dist)
-    d = u[0]
-    node = u[1]
+while len(visited)!=n:
+    currentmin = INF
+    for i in range(len(dd)):
+        if dd[i]<currentmin and (i not in visited):
+            currentmin=dd[i]
+            currentminindex = i
+    d = currentmin
+    node = currentminindex
     if node in visited:
         continue
     visited.add(node)
@@ -36,11 +39,9 @@ while dist:
         alt = d+v[1]
         if dd[v[0]]>alt:
             dd[v[0]]=alt
-            heapq.heappush(dist, (alt, v[0]))
 
-outout=float('inf')
+outout=INF
 for i in range(n):
     if pen[i]!=-1:
         outout = min(dd[i]+pen[i], outout)
 print(outout)
-#faster way??
