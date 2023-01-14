@@ -1,5 +1,6 @@
 import sys
 import heapq
+from collections import deque, Counter
 input = sys.stdin.readline
 
 k,n,m = map(int, input().split())
