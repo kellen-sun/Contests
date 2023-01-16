@@ -4,18 +4,24 @@ from collections import deque, Counter
 input = sys.stdin.readline
 
 n, w = map(int, input().split())
-items = [0]
-for i in range(n): items.append(list(map(int, input().split())))
-
-dp = [0 for i in range(w+1)]
-dp1 = [0 for i in range(w+1)]
-for i in range(1, n+1):
-    value = items[i-1][1]
-    weight = items[i-1][0]
-    for j in range(w+1):
-        if j<weight:
-            dp1[j] = dp[j]
+weights, values = zip(*[map(int, input().split()) for i in range(n)])
+V = sum(values)+1
+dp = [[float('inf') for j in range(V)] for i in range(n)]
+for i in range(n):
+    dp[i][0]=0
+for i in range(n):
+    for j in range(1, V):
+        if i==0:
+            if values[i]==j:
+                dp[0][values[i]] = weights[i]
         else:
-            dp1[j] = max(dp[j], dp[j-weight]+value)
-    dp = dp1[:]
-print(dp1[-1])
+            if j>=values[i]:
+                dp[i][j] = min(dp[i-1][j-values[i]]+weights[i], dp[i-1][j])
+            else:
+                dp[i][j] = dp[i-1][j]
+            
+#print(dp)
+for i in range(V):
+    if dp[-1][V-1-i]<=w:
+        print(V-1-i)
+        break
