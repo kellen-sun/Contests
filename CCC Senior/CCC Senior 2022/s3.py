@@ -1,45 +1,34 @@
-n,m,k=map(int, input().split())
-if m==2:
-    if (k>(2*n-1)) or (k<n):
-        print(-1)
-    else:
-        if k==2*n-1:
-            arr=[1,2]*n
-            print(*arr[:n])
-        else:
-            if k%2==1:
-                if n%2==1:
-                    temp=(k-n)//2
-                    arr=[1,2]*temp
-                    ex=[1]*(2*n-k)
-                    arr.extend(ex)
-                    print(*arr)
-                else:
-                    temp=(k-n)//2
-                    arr=[1,2]*temp
-                    ex=[1]*(2*n-k)
-                    arr.extend(ex)
-                    arr.append(2)
-                    print(*arr)
-            else:
-                if n%2==1:
-                    temp=(k-n)//2
-                    arr=[1,2]*temp
-                    ex=[1]*(2*n-k)
-                    arr.extend(ex)
-                    arr.append(2)
-                    print(*arr)
-                else:
-                    temp=(k-n)//2
-                    arr=[1,2]*temp
-                    ex=[1]*(2*n-k)
-                    arr.extend(ex)
-                    print(*arr)
-                
+import sys
+import heapq
+from collections import deque, Counter
+input = sys.stdin.readline
 
-else:
-    goal = k-n
-    out=[1]
-    for i in range(1,n):
-        if i-1>goal:
-            
+n,m,k = map(int, input().split())
+target = k-n
+notes = [1]
+current = 0
+cur_note = 1
+extra = 1
+going_up = True
+while target>=current:
+    #forgot to consider m
+    if len(notes)>n:
+        break
+    if target==current:
+        for i in range(n-len(notes)):
+            notes.append(cur_note)
+        print(*notes)
+        sys.exit()
+    if target-current>=extra and cur_note<=m:
+        if going_up:
+            cur_note+=1
+        else:
+            cur_note-=1
+        notes.append(cur_note)
+        current+=extra
+        extra+=1
+    else:
+        extra = 1
+        going_up = not going_up
+
+print(-1)
