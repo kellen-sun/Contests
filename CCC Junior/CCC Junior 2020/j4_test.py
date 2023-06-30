@@ -1,14 +1,13 @@
-a = input('')
-b = input('')
-c = False
-for x in range(len(b)):
-    if a.find(b) != -1:
-        print(a.find(b))
-        c = True
+import sys
+input = sys.stdin.readline
+t = input()[:-1]
+s = input()[:-1]
+cyclic = {}
+for i in range(len(s)):
+    cyclic[s[i:]+s[:i]] = True
 
-    b = b[1:-1]+b[0]
-    print(b)
-if c == True:
-    print('yes')
-else:
-    print('no')
+for i in range(len(t)-len(s)+1):
+    if cyclic.get(t[i:len(s)+i]):
+        print("yes")
+        sys.exit()
+print("no")
