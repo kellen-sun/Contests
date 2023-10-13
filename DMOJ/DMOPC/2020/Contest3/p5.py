@@ -18,6 +18,7 @@ def phi(M):
         prod*=(1-1/p)
     return int(prod)
 
+
 def checkgreater(a, b, mod):
     c = a
     counter = 1
@@ -66,5 +67,3 @@ else:
             array.append(1)
         #print(array)
     print(pow(array[0], array[1], M))
-
-
